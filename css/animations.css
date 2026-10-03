@@ -1,0 +1,103 @@
+/* ==========================================================================
+   Keyframes, Particle Glows, Camera Transitions & Cinematic Animations
+   ========================================================================== */
+
+@keyframes pulse-reticle {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 10px var(--amber-primary);
+  }
+  100% {
+    transform: scale(1.15);
+    box-shadow: 0 0 25px var(--amber-light), 0 0 40px var(--amber-glow);
+  }
+}
+
+@keyframes pulse-avatar {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 10px var(--cyan-primary);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--cyan-primary), 0 0 45px var(--cyan-glow);
+  }
+  100% {
+    transform: scale(0.98);
+    box-shadow: 0 0 10px var(--cyan-primary);
+  }
+}
+
+@keyframes float-badge {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes toast-slide {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes key-glow {
+  0% {
+    filter: drop-shadow(0 0 10px #f1c40f);
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    filter: drop-shadow(0 0 30px #f39c12) drop-shadow(0 0 50px #ffcc00);
+    transform: translateY(-8px) rotate(4deg);
+  }
+  100% {
+    filter: drop-shadow(0 0 10px #f1c40f);
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.golden-key-animate {
+  animation: key-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes door-unlock {
+  0% {
+    box-shadow: 0 0 0 rgba(46, 204, 113, 0);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(46, 204, 113, 0.8), inset 0 0 40px rgba(46, 204, 113, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(46, 204, 113, 0.4);
+  }
+}
+
+.door-unlock-flash {
+  animation: door-unlock 1.8s ease forwards;
+}
+
+/* Screen Transitions */
+.cinematic-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cinematic-fade-overlay.fading {
+  opacity: 1;
+  pointer-events: auto;
+}

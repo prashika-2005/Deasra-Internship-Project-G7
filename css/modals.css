@@ -1,0 +1,3129 @@
+/* ==========================================================================
+   Modals, Interactive Puzzle Interfaces, Knowledge Box, Quizzes & Overlays
+   ========================================================================== */
+
+/* Base Modal Backdrop */
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 3, 2, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+  pointer-events: none;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Modal Card Base */
+.modal-card {
+  background: linear-gradient(145deg, rgba(28, 16, 11, 0.97) 0%, rgba(14, 7, 4, 0.99) 100%);
+  border: 1.5px solid rgba(212, 172, 13, 0.6);
+  border-radius: 14px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212, 172, 13, 0.15);
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  position: relative;
+  transform: scale(0.94) translateY(12px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-backdrop.active .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-card-lg {
+  max-width: 900px;
+}
+
+.modal-card-xl {
+  max-width: 1050px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 172, 13, 0.4);
+  color: #ffd700;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: #e74c3c;
+  color: #fff;
+  transform: rotate(90deg) scale(1.1);
+}
+
+.modal-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-subtitle {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #f1c40f;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.modal-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   1. Onboarding & Avatar Selection
+   ========================================================================== */
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffd280;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(10, 5, 3, 0.85);
+  border: 1.5px solid rgba(212, 172, 13, 0.4);
+  border-radius: 6px;
+  color: #fff;
+  font-family: var(--font-main, sans-serif);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.form-input:focus {
+  border-color: #f1c40f;
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+}
+
+.budget-num-input {
+  width: 120px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1.5px solid rgba(255, 215, 0, 0.5);
+  border-radius: 6px;
+  color: #ffd700;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: right;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.budget-num-input:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.avatar-card {
+  background: rgba(20, 11, 7, 0.75);
+  border: 1.5px solid rgba(212, 172, 13, 0.3);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.avatar-card:hover {
+  transform: translateY(-4px);
+  border-color: #f1c40f;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+}
+
+.avatar-card.active {
+  border-color: #00f2fe;
+  background: linear-gradient(180deg, rgba(0, 50, 80, 0.5) 0%, rgba(20, 11, 7, 0.9) 100%);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+.avatar-icon {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.avatar-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffd700;
+  margin-bottom: 4px;
+}
+
+.avatar-desc {
+  font-size: 11px;
+  color: #d1c4b8;
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   2. Building Map
+   ========================================================================== */
+.building-map-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.room-map-card {
+  background: rgba(20, 10, 5, 0.85);
+  border: 1.5px solid rgba(212, 172, 13, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.room-map-card:hover {
+  border-color: #ffd700;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+}
+
+.room-map-card.available {
+  border-color: #2ecc71;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.25);
+}
+
+.room-map-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.room-card-status {
+  font-size: 10px;
+  font-weight: 800;
+  color: #2ecc71;
+  letter-spacing: 1px;
+}
+
+.room-map-card.locked .room-card-status {
+  color: #e74c3c;
+}
+
+.room-card-icon {
+  font-size: 32px;
+}
+
+.room-card-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.room-card-desc {
+  font-size: 12px;
+  color: #d1c4b8;
+  line-height: 1.4;
+}
+
+.room-card-kbs {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #ffd280;
+  font-weight: 700;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ==========================================================================
+   3. Notice Board Clues Modal (Wall 2 - Photorealistic Vintage Clue Board)
+   ========================================================================== */
+.notice-board-modal-frame {
+  position: relative;
+  max-width: 680px;
+  width: 92vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(212, 172, 13, 0.35);
+  animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notice-board-full-img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  border: 2px solid rgba(212, 172, 13, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+}
+
+.notice-board-close-plaque-btn {
+  position: absolute;
+  bottom: 3.2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58%;
+  height: 6.8%;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid transparent;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+}
+
+.notice-board-close-plaque-btn .notice-board-close-text {
+  display: none;
+}
+
+.notice-board-close-plaque-btn:hover {
+  background: rgba(255, 215, 0, 0.18);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.75);
+  border: 1.5px solid rgba(255, 215, 0, 0.9);
+  transform: translateX(-50%) scale(1.02);
+}
+
+.notice-board-close-plaque-btn:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+/* ==========================================================================
+   4. Vintage Desk Scratch Frame Mini-Game (Wall 2)
+   ========================================================================== */
+.scratch-desk-modal-card {
+  max-width: 640px;
+  width: 92vw;
+  text-align: center;
+  padding: 24px;
+}
+
+.scratch-desk-vignette-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 440px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(212, 172, 13, 0.4);
+  margin: 0 auto;
+}
+
+.scratch-desk-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Positioned directly inside the center square opening of the desk frame */
+.scratch-card-box {
+  position: absolute;
+  top: 38.6%;
+  left: 40.2%;
+  width: 24.1%;
+  height: 32.2%;
+  border-radius: 2px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  background: #e8d0a3;
+  cursor: crosshair;
+  z-index: 10;
+}
+
+.scratch-secret-reveal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #fcf4de 0%, #e8ce9b 80%, #caa66d 100%);
+  color: #2b1408;
+  z-index: 1;
+  padding: 4px;
+  user-select: none;
+}
+
+.scratch-filigree-top,
+.scratch-filigree-bottom {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #8c5d2e;
+  opacity: 0.8;
+}
+
+.scratch-reveal-label {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 9px;
+  font-weight: 800;
+  color: #7a3e1d;
+  letter-spacing: 1px;
+}
+
+.scratch-reveal-passcode {
+  font-family: var(--font-mono, 'Cinzel', monospace);
+  font-size: 38px;
+  font-weight: 900;
+  color: #1a0802;
+  line-height: 1;
+  letter-spacing: 3px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.scratch-reveal-sub {
+  font-size: 8px;
+  font-weight: 700;
+  color: #8a481c;
+  letter-spacing: 0.5px;
+}
+
+.scratch-canvas-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  cursor: grab;
+}
+
+.scratch-canvas-layer:active {
+  cursor: grabbing;
+}
+
+.scratch-modal-footer {
+  margin-top: 18px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   5. Keypad 2-Digit Drawer Modal (Wall 2)
+   ========================================================================== */
+.keypad-display-screen {
+  width: 180px;
+  height: 60px;
+  margin: 0 auto 16px auto;
+  background: #0a0502;
+  border: 2px solid #d4ac0d;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 10px;
+  color: #ffd700;
+  box-shadow: inset 0 0 12px rgba(212, 172, 13, 0.4);
+}
+
+.keypad-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.key-btn {
+  height: 52px;
+  background: linear-gradient(135deg, #2d180f 0%, #1a0f0a 100%);
+  border: 1.5px solid rgba(212, 172, 13, 0.4);
+  border-radius: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.key-btn:hover {
+  border-color: #ffd700;
+  color: #ffd700;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 172, 13, 0.4);
+}
+
+.key-btn-clear {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+.key-btn-enter {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.5);
+}
+
+/* ==========================================================================
+   6. Heavy Steel Vault Safe Modal (Wall 4)
+   ========================================================================== */
+.safe-vault-card {
+  background: linear-gradient(180deg, #222226 0%, #121214 100%) !important;
+  border: 3px double #d4ac0d !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(212, 172, 13, 0.25) !important;
+}
+
+.safe-vault-door-graphic {
+  position: relative !important;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1 / 1;
+  margin: 16px auto 0 auto;
+  border: 4px solid #4a4a50;
+  border-radius: 12px;
+  overflow: visible !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(0, 0, 0, 0.85);
+  background: #111;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.safe-vault-door-graphic:hover {
+  transform: scale(1.02);
+  border-color: #d4ac0d;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 16px 45px rgba(0, 0, 0, 0.95);
+}
+
+.vault-door-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  filter: contrast(1.08) brightness(0.95);
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), filter 0.8s ease;
+}
+
+.safe-vault-door-graphic.unlocking .vault-door-img {
+  transform: scale(1.06);
+  filter: contrast(1.2) brightness(1.1);
+}
+
+/* Vault Door Focal Dots (Handle 1 & Handle 2) */
+.vault-focal-dot {
+  position: absolute !important;
+  z-index: 50 !important;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+.vault-focal-dot:hover {
+  transform: translate(-50%, -50%);
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
+
+.vault-focal-dot.installed {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+.vault-dot-label-badge {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(18, 9, 4, 0.92);
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes vault-dot-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 12px #ffcc00, 0 0 22px rgba(255, 204, 0, 0.85);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.25);
+    box-shadow: 0 0 20px #ffffff, 0 0 32px rgba(255, 204, 0, 1);
+  }
+}
+
+/* ==========================================================================
+   7. Wall Clock Puzzle Modal (Wall 1)
+   ========================================================================== */
+.clock-puzzle-dial-box {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 16px auto;
+  position: relative;
+  background: radial-gradient(circle, #fffaed 0%, #ebd4a5 90%);
+  border: 8px solid #5c3a1e;
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.vintage-dial-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.dial-hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background: #111;
+  border-radius: 3px;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dial-hour {
+  width: 5px;
+  height: 55px;
+  margin-left: -2.5px;
+}
+
+.dial-minute {
+  width: 3px;
+  height: 80px;
+  margin-left: -1.5px;
+}
+
+.dial-center-cap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: #d4ac0d;
+  border: 2px solid #000;
+  border-radius: 50%;
+}
+
+.dial-roman {
+  position: absolute;
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 14px;
+  font-weight: 900;
+  color: #222;
+}
+
+.num-12 { top: 8px; left: 50%; transform: translateX(-50%); }
+.num-3  { top: 50%; right: 12px; transform: translateY(-50%); }
+.num-4  { bottom: 35px; right: 28px; }
+.num-6  { bottom: 8px; left: 50%; transform: translateX(-50%); }
+.num-9  { top: 50%; left: 12px; transform: translateY(-50%); }
+
+/* ==========================================================================
+   8. 3-Piece Painting Assembly & Restoration Modal (Wall 3)
+   ========================================================================== */
+.painting-assembly-area {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  width: 100%;
+}
+
+.painting-canvas-frame-outer {
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 4 / 3;
+  background: #140b06;
+  border: 10px solid #a37a1f;
+  border-image: linear-gradient(135deg, #ffd700, #966f1e, #f1c40f, #66460f) 1;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.painting-canvas-interactive-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #1c1008 url('../assets/wallpaper.png');
+  background-size: cover;
+}
+
+.painting-slot-col {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1.5px dashed rgba(212, 172, 13, 0.35);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+}
+
+.painting-slot-col:last-child {
+  border-right: none;
+}
+
+.painting-slot-col.slot-1 {
+  background-position: 0% center;
+}
+
+.painting-slot-col.slot-2 {
+  background-position: 50% center;
+}
+
+.painting-slot-col.slot-3 {
+  background-position: 100% center;
+}
+
+.painting-slot-col:hover:not(.filled) {
+  background-color: rgba(255, 215, 0, 0.08);
+}
+
+.empty-slot-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: rgba(255, 215, 0, 0.65);
+  text-align: center;
+  padding: 10px;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.slot-icon {
+  font-size: 28px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+}
+
+.slot-label {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.slot-hint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* When a fragment is placed */
+.painting-slot-col.filled {
+  background-image: url('../assets/flower_painting_master.jpg');
+  border-right-color: transparent;
+  animation: piece-snap-flash 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.painting-slot-col.filled .empty-slot-placeholder {
+  display: none;
+}
+
+@keyframes piece-snap-flash {
+  0% { transform: scale(0.92); filter: brightness(2) contrast(1.2); }
+  50% { transform: scale(1.03); filter: brightness(1.4); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Inventory Pieces Shelf */
+.painting-inv-pieces-shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+.piece-action-btn {
+  padding: 10px 16px;
+  background: rgba(24, 12, 6, 0.95);
+  border: 1.5px solid rgba(212, 172, 13, 0.5);
+  border-radius: 6px;
+  color: #ffd700;
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.piece-action-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(212, 172, 13, 0.35), rgba(30, 15, 8, 0.95));
+  border-color: #fff;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 215, 0, 0.4);
+}
+
+.piece-action-btn:disabled,
+.piece-action-btn.placed {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.4);
+  transform: none !important;
+}
+
+/* Golden Key Unlocked Celebration Card */
+.golden-key-unlocked-card {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(40, 20, 10, 0.95), rgba(16, 8, 4, 0.95));
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 215, 0, 0.4);
+  animation: key-card-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes key-card-pop {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.golden-key-crest {
+  font-size: 52px;
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  animation: key-spin-pulse 2s infinite ease-in-out;
+}
+
+@keyframes key-spin-pulse {
+  0% { transform: scale(1) rotate(-8deg); }
+  50% { transform: scale(1.15) rotate(8deg); }
+  100% { transform: scale(1) rotate(-8deg); }
+}
+
+.golden-key-details {
+  flex: 1;
+}
+
+/* ==========================================================================
+   9. Knowledge Box, Video, Quizzes
+   ========================================================================== */
+.kb-video-container {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.kb-video-player-mock {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #1a2a3a 0%, #080f18 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.kb-video-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 6px;
+  background: #00f2fe;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.quiz-question-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.4;
+}
+
+.quiz-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-option-btn {
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  background: rgba(22, 11, 7, 0.75);
+  border: 1.5px solid rgba(212, 172, 13, 0.3);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-option-btn:hover {
+  background: rgba(255, 170, 51, 0.15);
+  border-color: #ffd700;
+  transform: translateX(4px);
+}
+
+.quiz-option-btn.correct {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.25);
+}
+
+.quiz-option-btn.wrong {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.25);
+}
+
+.kb-placeholder-card {
+  margin: 14px 0;
+  padding: 12px 16px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1.5px dashed #00e5ff;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.kb-placeholder-card:hover {
+  background: rgba(0, 229, 255, 0.14);
+  border-color: #00ffff;
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+}
+
+/* ==========================================================================
+   10. Inventory & Report Certificate
+   ========================================================================== */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+}
+
+.inventory-slot-card {
+  aspect-ratio: 1;
+  background: rgba(18, 9, 6, 0.85);
+  border: 1px solid rgba(212, 172, 13, 0.3);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inventory-slot-card:hover {
+  border-color: #ffd700;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+}
+
+.inventory-slot-card.has-item {
+  border-color: #f1c40f;
+  background: linear-gradient(135deg, rgba(40, 20, 10, 0.9), rgba(18, 9, 6, 0.9));
+}
+
+.inv-item-icon {
+  font-size: 32px;
+}
+
+.inv-item-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.report-section-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffd700;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.report-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.report-stat-card {
+  background: rgba(18, 9, 6, 0.85);
+  border: 1.5px solid rgba(212, 172, 13, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.report-stat-val {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffd700;
+}
+
+.report-stat-lbl {
+  font-size: 10px;
+  color: #d1c4b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.certificate-preview-box {
+  background: #fdfaf3;
+  color: #1a0f0a;
+  border: 8px double #a07844;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.cert-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 20px;
+  font-weight: 800;
+  color: #5c3a1e;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cert-student-name {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 24px;
+  font-weight: 800;
+  color: #1a0f0a;
+  text-decoration: underline;
+  margin: 10px 0;
+}
+
+/* ==========================================================================
+   14. GRAND 4-DOOR MASTERY CORRIDOR (Full-Screen Immersive Chamber Hub)
+   ========================================================================== */
+#mastery-corridor-modal.modal-backdrop {
+  padding: 0;
+  background: #060302;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.corridor-master-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #060302;
+}
+
+.corridor-frame-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 177.78vh; /* 16:9 aspect ratio locking */
+  max-height: 56.25vw;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.95);
+}
+
+.corridor-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.05) brightness(1.02) saturate(1.06);
+}
+
+/* Top bar inside Corridor */
+.corridor-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, rgba(10, 4, 2, 0.95) 0%, rgba(10, 4, 2, 0) 100%);
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.corridor-title-tag {
+  display: flex;
+  flex-direction: column;
+  background: rgba(20, 9, 4, 0.9);
+  border: 1px solid rgba(212, 172, 13, 0.5);
+  padding: 6px 18px;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
+}
+
+.corridor-phase-sub {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--amber-primary, #ffd700);
+  text-transform: uppercase;
+}
+
+.corridor-main-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.8px;
+}
+
+.corridor-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 4 Interactive Clickable Doors Overlay (Clean Hotspots - Zero Rectangular Outlines) */
+.corridor-doors-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.corridor-door-target {
+  position: absolute;
+  cursor: pointer;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: all 0.25s ease;
+  border-radius: 120px 120px 0 0;
+}
+
+.corridor-door-target.door-101 {
+  top: 24.5%;
+  left: 14.8%;
+  width: 16.5%;
+  height: 62.0%;
+}
+
+.corridor-door-target.door-102 {
+  top: 24.5%;
+  left: 33.5%;
+  width: 16.5%;
+  height: 62.0%;
+}
+
+.corridor-door-target.door-103 {
+  top: 24.5%;
+  left: 52.2%;
+  width: 16.5%;
+  height: 62.0%;
+}
+
+.corridor-door-target.door-104 {
+  top: 24.5%;
+  left: 70.8%;
+  width: 16.5%;
+  height: 62.0%;
+}
+
+/* Subtle Golden Luminous Pinpoint on Hover at Door Handle (Zero Rectangles) */
+.corridor-door-target::after {
+  content: '';
+  position: absolute;
+  top: 62%;
+  left: 82%;
+  transform: translate(-50%, -50%) scale(0.6);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #ffd700 60%, #e67e22 100%);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.corridor-door-target:hover::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.6);
+  box-shadow: 0 0 22px rgba(255, 215, 0, 1), 0 0 44px rgba(243, 156, 18, 0.95);
+}
+
+/* Bottom banner */
+.corridor-bottom-banner {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(16, 8, 4, 0.92);
+  border: 1px solid rgba(212, 172, 13, 0.5);
+  padding: 7px 24px;
+  border-radius: 20px;
+  color: #f7dc6f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ==========================================================================
+   15. GRAND TITLE SCREEN LANDING COVER (First Page with 3s Delayed Pop-up)
+   ========================================================================== */
+.title-landing-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #070302;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  overflow: hidden;
+}
+
+.title-landing-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.title-landing-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 177.78vh; /* 16:9 ratio */
+  max-height: 56.25vw;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.98);
+}
+
+.title-landing-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.05) brightness(1.02) saturate(1.06);
+}
+
+.title-ambient-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.55) 80%, rgba(0, 0, 0, 0.85) 100%);
+  pointer-events: none;
+}
+
+/* 3-Second Delayed Pop-up Story Card */
+.title-story-popup-card {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px) scale(0.94);
+  width: 90%;
+  max-width: 720px;
+  background: linear-gradient(135deg, rgba(24, 12, 7, 0.94) 0%, rgba(12, 6, 3, 0.97) 100%);
+  border: 2px solid rgba(212, 172, 13, 0.9);
+  border-radius: 18px;
+  padding: 26px 36px 28px 36px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(212, 172, 13, 0.35);
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10;
+}
+
+.title-story-popup-card.revealed {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.story-card-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffd700;
+  text-transform: uppercase;
+  display: inline-block;
+  background: rgba(212, 172, 13, 0.15);
+  border: 1px solid rgba(212, 172, 13, 0.4);
+  padding: 3px 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.story-card-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffd700;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  margin-bottom: 12px;
+}
+
+.story-card-description {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #f7ede3;
+  margin-bottom: 22px;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.btn-begin-pulse {
+  padding: 13px 44px;
+  font-size: 14.5px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1a0f0a !important;
+  background: linear-gradient(135deg, #ffd700 0%, #d4ac0d 60%, #b78909 100%);
+  border: 1px solid #fff3a8;
+  border-radius: 30px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.75), 0 4px 15px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: begin-pulse 2.2s infinite alternate ease-in-out;
+}
+
+.btn-begin-pulse:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 6px 20px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes begin-pulse {
+  0% { box-shadow: 0 0 18px rgba(255, 215, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.5); transform: scale(1); }
+  100% { box-shadow: 0 0 35px rgba(255, 215, 0, 0.95), 0 0 50px rgba(230, 126, 34, 0.45); transform: scale(1.03); }
+}
+
+/* ==========================================================================
+   16. GRAND VOXEL AVATAR SELECTION SCREEN
+   ========================================================================== */
+#avatar-selection-screen.modal-backdrop {
+  padding: 0;
+  background: #060302;
+  z-index: 99990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-select-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #060302;
+}
+
+.avatar-select-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 177.78vh; /* 16:9 aspect ratio */
+  max-height: 56.25vw;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.98);
+}
+
+.avatar-select-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.04) brightness(1.02) saturate(1.06);
+}
+
+/* 4 Interactive Avatar Selection Zones */
+.avatar-cards-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.avatar-char-card {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.avatar-char-card#avatar-card-creator {
+  top: 34.5%;
+  left: 4.8%;
+  width: 21.0%;
+  height: 53.0%;
+}
+
+.avatar-char-card#avatar-card-leader {
+  top: 34.5%;
+  left: 27.5%;
+  width: 21.0%;
+  height: 53.0%;
+}
+
+.avatar-char-card#avatar-card-explorer {
+  top: 34.5%;
+  left: 50.5%;
+  width: 21.0%;
+  height: 53.0%;
+}
+
+.avatar-char-card#avatar-card-strategist {
+  top: 34.5%;
+  left: 73.5%;
+  width: 21.0%;
+  height: 53.0%;
+}
+
+/* Golden Highlight Border on Hover & Active Selection */
+.avatar-char-border {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.avatar-char-card:hover .avatar-char-border {
+  border-color: rgba(255, 215, 0, 0.7);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.45);
+}
+
+.avatar-char-card.selected .avatar-char-border {
+  border: 2.5px solid #ffd700;
+  box-shadow: 0 0 35px rgba(255, 215, 0, 0.85), inset 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+/* Checkmark Badge */
+.avatar-char-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd700 0%, #d4ac0d 100%);
+  color: #1a0f0a;
+  font-size: 13px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.avatar-char-card.selected .avatar-char-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Bottom Action Button */
+.avatar-select-action-btn {
+  position: absolute;
+  top: 90.0%;
+  left: 31.0%;
+  width: 38.0%;
+  height: 6.8%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 20;
+  transition: all 0.25s ease;
+  border-radius: 8px;
+}
+
+.avatar-select-action-btn:hover {
+  background: rgba(255, 215, 0, 0.14);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  transform: scale(1.02);
+}
+
+#avatar-btn-text {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 2px 5px rgba(0, 0, 0, 0.95);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   17. BUILDING LOBBY ENTRANCE CONCOURSE
+   ========================================================================== */
+#building-lobby-screen.modal-backdrop {
+  padding: 0;
+  background: #060302;
+  z-index: 99980;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lobby-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #060302;
+}
+
+.lobby-frame-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 177.78vh; /* 16:9 ratio */
+  max-height: 56.25vw;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.98);
+}
+
+.lobby-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.04) brightness(1.02) saturate(1.06);
+}
+
+/* Top Avatar Tag */
+.lobby-top-avatar-tag {
+  position: absolute;
+  top: 3.2%;
+  right: 4.8%;
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: #e5b958;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 8px rgba(229, 185, 88, 0.6);
+  pointer-events: none;
+  z-index: 10;
+  text-transform: uppercase;
+}
+
+/* Room 1 Door Clickable Hotspot */
+.lobby-door-target {
+  position: absolute;
+  top: 35.5%;
+  left: 39.0%;
+  width: 21.8%;
+  height: 44.0%;
+  cursor: pointer;
+  z-index: 15;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+/* Glowing Access Dot on Brass Doorknob */
+.lobby-knob-access-dot {
+  position: absolute;
+  top: 61.2%;
+  left: 77.0%; /* relative to door target */
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #e67e22 100%);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 1), 0 0 32px rgba(243, 156, 18, 0.85);
+  animation: knob-glow-pulse 1.4s infinite alternate ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes knob-glow-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
+  100% { transform: translate(-50%, -50%) scale(1.45); box-shadow: 0 0 28px rgba(255, 215, 0, 1), 0 0 48px rgba(230, 126, 34, 0.95); }
+}
+
+.lobby-door-target:hover .lobby-knob-access-dot {
+  transform: translate(-50%, -50%) scale(1.85);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 70px rgba(255, 255, 255, 1);
+}
+
+/* Professor Vance Hotspot */
+.lobby-vance-target {
+  position: absolute;
+  top: 26.5%;
+  left: 64.5%;
+  width: 17.5%;
+  height: 48.0%;
+  cursor: pointer;
+  z-index: 15;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.lobby-vance-target:hover {
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.7));
+}
+
+/* ==========================================================================
+   18. PARCHMENT ARCHITECTURAL BUILDING MAP MODAL
+   ========================================================================== */
+#map-modal.modal-backdrop {
+  padding: 0;
+  background: rgba(6, 3, 2, 0.95);
+  z-index: 99995;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parchment-map-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #060302;
+}
+
+.parchment-map-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 125vh; /* aspect ratio matching map image ~5:4 */
+  max-height: 80vw;
+  aspect-ratio: 1.25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.98);
+}
+
+.parchment-map-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.04) brightness(1.02);
+}
+
+/* Close button on Map */
+.parchment-map-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: rgba(18, 9, 4, 0.92);
+  border: 1.5px solid #d4ac0d;
+  color: #ffd700;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+  transition: all 0.25s ease;
+}
+
+.parchment-map-close-btn:hover {
+  transform: scale(1.1);
+  background: #d4ac0d;
+  color: #1a0f0a;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+}
+
+/* Map Interactive Room Zones */
+.map-zones-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 15;
+}
+
+.map-room-zone {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  background: transparent;
+}
+
+.map-room-zone:hover {
+  background: rgba(255, 215, 0, 0.14);
+  box-shadow: inset 0 0 25px rgba(212, 172, 13, 0.6), 0 0 20px rgba(212, 172, 13, 0.45);
+}
+
+/* 1. Entrance Lobby */
+.map-room-zone#map-zone-entrance {
+  top: 78.5%;
+  left: 29.5%;
+  width: 40.5%;
+  height: 10.5%;
+}
+
+/* 2. Introduction Room (Room 1) */
+.map-room-zone#map-zone-room1 {
+  top: 60.8%;
+  left: 29.5%;
+  width: 40.5%;
+  height: 17.5%;
+}
+
+/* 3. Lobby Concourse */
+.map-room-zone#map-zone-lobby {
+  top: 34.5%;
+  left: 29.5%;
+  width: 40.5%;
+  height: 26.0%;
+}
+
+/* 4. Mindset Room (Room 2) */
+.map-room-zone#map-zone-mindset {
+  top: 34.5%;
+  left: 10.2%;
+  width: 19.3%;
+  height: 26.0%;
+}
+
+/* 5. Financial Vault (Room 3) */
+.map-room-zone#map-zone-finance {
+  top: 8.5%;
+  left: 29.5%;
+  width: 20.2%;
+  height: 26.0%;
+}
+
+/* 6. Personal Branding (Room 4) */
+.map-room-zone#map-zone-branding {
+  top: 8.5%;
+  left: 49.8%;
+  width: 20.2%;
+  height: 26.0%;
+}
+
+/* 7. Problem Solving (Room 5) */
+.map-room-zone#map-zone-ideas {
+  top: 34.5%;
+  left: 70.0%;
+  width: 19.3%;
+  height: 26.0%;
+}
+
+/* Bottom Hint on Map */
+.parchment-map-banner {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(18, 9, 4, 0.92);
+  border: 1px solid rgba(212, 172, 13, 0.6);
+  padding: 6px 20px;
+  border-radius: 20px;
+  color: #f7dc6f;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  z-index: 25;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   FINANCIAL VAULT: ARROW-PATTERN SUITCASE & PAINTING CLUE STYLES
+   ========================================================================== */
+.suitcase-view-container {
+  margin-top: 16px;
+}
+
+.suitcase-lock-display-screen {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--brass-vintage, #d4ac0d);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.arrow-slot-box {
+  width: 46px;
+  height: 46px;
+  border: 2px dashed rgba(212, 172, 13, 0.4);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffd700;
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+}
+
+.arrow-slot-box.filled {
+  border-style: solid;
+  border-color: #ffd700;
+  background: rgba(212, 172, 13, 0.25);
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.5);
+}
+
+.arrow-pad-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.arrow-pad-row {
+  display: flex;
+  gap: 10px;
+}
+
+.arrow-pad-btn {
+  width: 62px;
+  height: 54px;
+  background: linear-gradient(180deg, #3a2215 0%, #1f1008 100%);
+  border: 2px solid #d4ac0d;
+  border-radius: 8px;
+  color: #ffd700;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.arrow-pad-btn:hover {
+  transform: scale(1.08);
+  background: linear-gradient(180deg, #573420 0%, #2e180d 100%);
+  border-color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+/* Marble Gold 8-Button Keypad for Suitcase */
+.marble-keypad-panel {
+  padding: 18px;
+  background: radial-gradient(circle at 50% 50%, #1c2723 0%, #0d1512 100%);
+  border: 3px double #d4ac0d;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(0, 0, 0, 0.9);
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.marble-keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.marble-key-btn {
+  background: linear-gradient(145deg, #2b2820 0%, #15130f 100%);
+  border: 2px solid #b89635;
+  border-radius: 10px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.85), inset 0 2px 4px rgba(255, 215, 0, 0.25);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.marble-key-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: #ffd700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.95), 0 0 14px rgba(255, 215, 0, 0.5);
+}
+
+.marble-key-btn:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.9);
+}
+
+.key-arrow-symbol {
+  font-size: 26px;
+  color: #d4ac0d;
+  font-weight: 900;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+}
+
+.arrow-pad-btn:active {
+  transform: scale(0.95);
+}
+
+.arrow-pad-btn.btn-clear {
+  font-size: 18px;
+  background: #2a0b06;
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+/* Opened Suitcase Item Cards */
+.suitcase-opened-interior {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.suitcase-item-card {
+  background: rgba(25, 12, 6, 0.9);
+  border: 2px solid #d4ac0d;
+  border-radius: 10px;
+  padding: 20px 16px;
+  width: 190px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+
+.suitcase-item-card:hover:not(.collected) {
+  transform: translateY(-6px) scale(1.04);
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.suitcase-item-card.collected {
+  border-color: #27ae60;
+  opacity: 0.75;
+  cursor: default;
+}
+
+.suitcase-item-icon {
+  font-size: 44px;
+  margin-bottom: 10px;
+}
+
+.suitcase-item-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.suitcase-item-status {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.suitcase-item-card.collected .suitcase-item-status {
+  color: #2ecc71;
+  background: rgba(39, 174, 96, 0.2);
+}
+
+/* Painting Clue Display */
+.painting-clue-canvas-box {
+  background: #140a05;
+  border: 3px double #d4ac0d;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.9);
+}
+
+.painting-clue-frame-art {
+  background: linear-gradient(135deg, #2b170c 0%, #150904 100%);
+  border: 2px solid #6b491e;
+  border-radius: 6px;
+  padding: 24px;
+  position: relative;
+}
+
+.painting-artwork-inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 24px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(212, 172, 13, 0.3);
+  border-radius: 4px;
+}
+
+.hidden-arrow-symbol {
+  font-size: 32px;
+  color: #d4ac0d;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.hidden-arrow-symbol:hover {
+  transform: scale(1.3);
+  color: #ffffff;
+  text-shadow: 0 0 12px #ffd700, 0 0 24px #ffd700;
+  opacity: 1;
+}
+
+/* Vault Handle Socket Overlay */
+.vault-handle-socket-overlay {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: inline-block;
+}
+
+.vault-handle-socket-overlay.missing {
+  background: rgba(231, 76, 60, 0.2);
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+
+.vault-handle-socket-overlay.installed {
+  background: rgba(39, 174, 96, 0.2);
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+}
+
+/* Card Shake Animation */
+@keyframes card-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.modal-card.shake {
+  animation: card-shake 0.4s ease;
+}
+
+/* ==========================================================================
+   FINANCIAL VAULT: ATM MACHINE PUZZLE STYLES
+   ========================================================================== */
+.atm-machine-card {
+  background: linear-gradient(145deg, #1e2430 0%, #0d1118 100%) !important;
+  border: 2px solid #3b485d !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(52, 152, 219, 0.2) !important;
+}
+
+.atm-viewport-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #090c10;
+  border: 2px solid #242d3c;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* ATM Screen */
+.atm-screen-box {
+  background: #051410;
+  border: 3px solid #10382c;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: inset 0 0 25px rgba(0, 255, 170, 0.15), 0 0 12px rgba(16, 56, 44, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.atm-screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 255, 170, 0.2);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.atm-bank-logo {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 800;
+  color: #00ffaa;
+  letter-spacing: 1px;
+}
+
+.atm-status-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+.atm-status-badge.active {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.4);
+}
+
+.atm-screen-body {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.atm-state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.atm-screen-icon {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.atm-screen-title {
+  font-family: var(--font-mono, monospace);
+  font-size: 18px;
+  font-weight: 800;
+  color: #00ffaa;
+  letter-spacing: 2px;
+}
+
+.atm-screen-title.gold-text {
+  color: #ffd700;
+}
+
+.atm-screen-title.green-text {
+  color: #2ecc71;
+}
+
+.atm-screen-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.atm-screen-msg {
+  font-size: 13px;
+  color: #a0c4b8;
+}
+
+.atm-screen-msg.bold {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.atm-screen-msg.muted {
+  color: #66887a;
+  font-size: 11px;
+}
+
+.atm-screen-hint {
+  font-size: 11px;
+  font-style: italic;
+  color: #ffd700;
+  margin-top: 4px;
+}
+
+.atm-pin-digits-display {
+  font-family: var(--font-mono, monospace);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 12px;
+  color: #00ffaa;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px dashed rgba(0, 255, 170, 0.4);
+  padding: 6px 18px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.atm-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(0, 255, 170, 0.2);
+  border-top-color: #00ffaa;
+  border-radius: 50%;
+  animation: atm-spin 0.8s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes atm-spin {
+  to { transform: rotate(360deg); }
+}
+
+.atm-success-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #2ecc71;
+  color: #000;
+  font-size: 24px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+  margin-bottom: 6px;
+}
+
+/* ATM Card Slot */
+.atm-card-slot-box {
+  background: #141a24;
+  border: 1.5px solid #2a3547;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-slot-bezel {
+  width: 180px;
+  height: 18px;
+  background: #090c12;
+  border: 2px solid #34495e;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+.card-slot-opening {
+  width: 140px;
+  height: 6px;
+  background: #000;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-slot-light {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e74c3c;
+  position: absolute;
+  right: 8px;
+  box-shadow: 0 0 6px #e74c3c;
+}
+
+.card-slot-light.active {
+  background: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71;
+}
+
+.card-slot-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #7f8c8d;
+  letter-spacing: 1px;
+}
+
+.atm-inserting-card {
+  font-size: 16px;
+  position: absolute;
+  left: 0;
+  top: -6px;
+  animation: card-insert-anim 1.2s ease-in-out forwards;
+}
+
+@keyframes card-insert-anim {
+  0% { transform: translateX(-40px) scale(1); opacity: 1; }
+  70% { transform: translateX(60px) scale(0.9); opacity: 1; }
+  100% { transform: translateX(120px) scale(0.5); opacity: 0; }
+}
+
+/* Keypad Grid */
+.atm-keypad-wrapper {
+  background: #141a24;
+  border: 1.5px solid #2a3547;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.atm-keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.atm-key-btn {
+  background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+  border: 1px solid #4a627a;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 18px;
+  font-weight: 800;
+  padding: 10px 0;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.atm-key-btn:hover {
+  background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%);
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.atm-key-btn:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.atm-key-btn.key-btn-clear {
+  background: linear-gradient(180deg, #c0392b 0%, #962d22 100%);
+  border-color: #e74c3c;
+  color: #fff;
+}
+
+.atm-key-btn.key-btn-enter {
+  background: linear-gradient(180deg, #27ae60 0%, #1e8449 100%);
+  border-color: #2ecc71;
+  color: #fff;
+}
+
+/* Lower Compartment */
+.atm-compartment-box {
+  background: #111822;
+  border: 2px dashed #2ecc71;
+  border-radius: 8px;
+  padding: 14px;
+  animation: compartment-open 0.5s ease-out;
+}
+
+@keyframes compartment-open {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.compartment-header {
+  font-size: 11px;
+  font-weight: 800;
+  color: #2ecc71;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.compartment-items-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.atm-dispensed-item {
+  background: rgba(46, 204, 113, 0.1);
+  border: 1.5px solid #2ecc71;
+  border-radius: 8px;
+  padding: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.atm-dispensed-item:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+  background: rgba(46, 204, 113, 0.2);
+}
+
+.atm-dispensed-item.collected {
+  opacity: 0.5;
+  border-color: #555;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: default;
+}
+
+.dispensed-icon {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.dispensed-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.dispensed-sub {
+  font-size: 10px;
+  font-weight: 700;
+  color: #2ecc71;
+  margin-top: 4px;
+}
+
+.atm-dispensed-item.collected .dispensed-sub {
+  color: #aaa;
+}
+
+/* PIN Note Modal Paper */
+.pin-note-paper-box {
+  background: linear-gradient(135deg, #fdf6e3 0%, #f4e8c1 100%);
+  border: 2px solid #b58900;
+  border-radius: 6px;
+  padding: 24px 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(181, 137, 0, 0.2);
+  margin: 12px 0;
+  color: #2b170c;
+}
+
+.pin-note-filigree {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 10px;
+  color: #8c6530;
+  margin: 6px 0;
+}
+
+.pin-note-text-line {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 15px;
+  font-weight: 700;
+  color: #1c0e06;
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+/* Counter Modal Display */
+.counter-inspect-card {
+  background: linear-gradient(145deg, #1c130c 0%, #0d0805 100%) !important;
+  border: 2px solid #d4ac0d !important;
+}
+
+.counter-display-box {
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(212, 172, 13, 0.4);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-icon-large {
+  font-size: 42px;
+}
+
+.counter-name-text {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 2px;
+}
+
+.counter-number-large {
+  font-family: var(--font-mono, monospace);
+  font-size: 54px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  line-height: 1;
+}
+
+.counter-clue-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fdf4b8;
+  background: rgba(212, 172, 13, 0.2);
+  border: 1px solid rgba(212, 172, 13, 0.5);
+  padding: 4px 14px;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+
+/* ATM Receipt Modal Paper Styles */
+.receipt-modal-card {
+  background: linear-gradient(145deg, #1c1917 0%, #0c0a09 100%) !important;
+  border: 2px solid #d4ac0d !important;
+}
+
+.receipt-paper-box {
+  background: #fbf8eb;
+  color: #1a1a1a;
+  border: 1px dashed #8c733e;
+  border-radius: 4px;
+  padding: 18px 16px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  line-height: 1.6;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+  margin: 12px 0;
+  text-align: left;
+}
+
+.receipt-header-logo {
+  text-align: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #333;
+}
+
+.receipt-divider {
+  color: #999;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px 0;
+}
+
+.receipt-row-large {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 900;
+  color: #8b0000;
+  background: #f0e6c8;
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.receipt-footer-note {
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   DRAWER INTERIOR & DISPENSED ITEMS STYLES
+   ========================================================================== */
+.drawer-modal-card {
+  background: linear-gradient(145deg, #1c1510 0%, #0d0805 100%) !important;
+  border: 2px solid #5c3a1e !important;
+}
+
+.drawer-opened-interior {
+  background: #0f0b08;
+  border: 2px solid #3d2613;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.9);
+  animation: drawer-slide-open 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes drawer-slide-open {
+  from { transform: translateY(-12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.drawer-header-status {
+  margin-bottom: 16px;
+}
+
+.drawer-status-tag {
+  font-size: 12px;
+  font-weight: 800;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid rgba(46, 204, 113, 0.4);
+  padding: 4px 12px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+}
+
+.drawer-items-container {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.drawer-item-card {
+  flex: 1;
+  background: rgba(43, 23, 12, 0.6);
+  border: 2px solid #d4ac0d;
+  border-radius: 8px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.drawer-item-card:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 10px 25px rgba(212, 172, 13, 0.5);
+  background: rgba(212, 172, 13, 0.15);
+}
+
+.drawer-item-card.collected {
+  opacity: 0.5;
+  border-color: #555;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: default;
+}
+
+.drawer-item-icon {
+  font-size: 38px;
+  margin-bottom: 6px;
+}
+
+.drawer-item-title {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.drawer-item-status {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ffd700;
+  margin-top: 6px;
+}
+
+.drawer-item-card.collected .drawer-item-status {
+  color: #888;
+}
+
+.drawer-engraved-banner {
+  margin-top: 16px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(212, 172, 13, 0.3);
+  border-radius: 6px;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 12px;
+  font-style: italic;
+  color: #fdf4b8;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   FULL-SCREEN UNLOCKED LOCKER ROOM MODAL
+   ========================================================================== */
+.locker-room-card {
+  width: 98vw;
+  height: 96vh;
+  max-width: 1400px;
+  max-height: 960px;
+  text-align: center;
+  background: linear-gradient(145deg, rgba(20, 12, 6, 0.98) 0%, rgba(8, 4, 2, 0.99) 100%);
+  border: 2px solid #ffd700;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 215, 0, 0.35);
+  padding: 20px 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.locker-room-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border: 2px solid #d4ac0d;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #060402;
+}
+
+.locker-room-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   DIGITAL PERSONAL MONEY MANAGEMENT TERMINAL (LOCKER 07 PUZZLE)
+   ========================================================================== */
+.terminal-card {
+  max-width: 680px;
+  background: linear-gradient(150deg, rgba(12, 18, 14, 0.98) 0%, rgba(5, 8, 6, 0.99) 100%);
+  border: 2px solid #2ecc71;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 40px rgba(46, 204, 113, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.terminal-header-badge {
+  display: inline-block;
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border: 1px solid #2ecc71;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.terminal-title {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.terminal-intro-p {
+  font-size: 14px;
+  color: #b0c4b8;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.terminal-warning-pill {
+  background: rgba(241, 196, 15, 0.15);
+  border: 1.5px solid #f1c40f;
+  color: #f1c40f;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin: 16px auto;
+  max-width: 440px;
+}
+
+.terminal-money-header {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1.5px solid rgba(46, 204, 113, 0.4);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.money-title-sm {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #888;
+}
+
+.money-amount-lg {
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 32px;
+  font-weight: 900;
+  color: #4cd964;
+  margin: 2px 0 6px 0;
+}
+
+.money-goal-text {
+  font-size: 12.5px;
+  color: #ccc;
+  margin-bottom: 12px;
+}
+
+.money-progress-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.money-progress-bar-track {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.money-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71 0%, #f1c40f 100%);
+  transition: width 0.3s ease;
+}
+
+.money-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #bbb;
+}
+
+.budget-section-card {
+  background: rgba(18, 25, 20, 0.85);
+  border: 1.5px solid rgba(46, 204, 113, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.budget-section-card.disabled-section {
+  opacity: 0.4;
+  pointer-events: none;
+  filter: grayscale(80%);
+}
+
+.section-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 15px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.section-tag-pill {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffd700;
+  letter-spacing: 0.5px;
+}
+
+.section-card-desc {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #ddd;
+}
+
+.budget-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.budget-table .table-total-row td {
+  border-top: 2px solid #2ecc71;
+  border-bottom: none;
+  font-size: 14px;
+  color: #4cd964;
+  padding-top: 10px;
+}
+
+.thrive-sliders-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.thrive-item-row {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.thrive-item-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: #eee;
+  margin-bottom: 6px;
+}
+
+.thrive-val {
+  color: #ffd700;
+  font-weight: 800;
+}
+
+.thrive-item-row input[type="range"] {
+  width: 100%;
+  accent-color: #2ecc71;
+  cursor: pointer;
+}
+
+.thrive-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 800;
+  color: #4cd964;
+  padding-top: 8px;
+  border-top: 1px solid rgba(46, 204, 113, 0.4);
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  color: #eee;
+  margin-bottom: 14px;
+}
+
+.summary-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.budget-approved-banner {
+  background: rgba(46, 204, 113, 0.15);
+  border: 2px solid #2ecc71;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.budget-approved-banner h3 {
+  color: #2ecc71;
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.budget-approved-banner p {
+  font-size: 12px;
+  color: #ddd;
+}
+
+.approved-badge {
+  display: inline-block;
+  background: #2ecc71;
+  color: #000;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.validation-checklist {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(46, 204, 113, 0.4);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.validation-checklist .check-item {
+  font-size: 13px;
+  color: #2ecc71;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.terminal-key-reveal-card {
+  background: rgba(255, 215, 0, 0.12);
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  padding: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+}
+
+.terminal-key-reveal-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 35px rgba(255, 215, 0, 0.5);
+}
+
+.key-icon-glow {
+  font-size: 42px;
+  animation: key-pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes floatChest {
+  0% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 8px 25px rgba(255,215,0,0.7)); }
+  50% { transform: translateY(-8px) rotate(1deg); filter: drop-shadow(0 16px 32px rgba(255,215,0,0.95)); }
+  100% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 8px 25px rgba(255,215,0,0.7)); }
+}
+
+@keyframes key-pulse-glow {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px #ffd700); }
+  50% { transform: scale(1.1); filter: drop-shadow(0 0 18px #ffd700); }
+}

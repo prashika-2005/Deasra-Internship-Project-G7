@@ -1,0 +1,596 @@
+/* ==========================================================================
+   HUD, Top Navigation, Wall Controls, Dialogue & Inventory Styles
+   ========================================================================== */
+
+/* Main HUD Container - Flush with Screen Top */
+#game-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+/* Header Top Bar - Centered Toolbar Stuck to Absolute Top Edge */
+.hud-header {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  pointer-events: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Top Navigation Action Buttons Group - Attached to Top Screen Bezel */
+.top-nav-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(18, 9, 5, 0.94);
+  border: 1px solid rgba(212, 172, 13, 0.45);
+  border-top: none;
+  padding: 4px 14px 6px 14px;
+  border-radius: 0 0 20px 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85), 0 0 16px rgba(212, 172, 13, 0.2);
+}
+
+.top-hud-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(38, 19, 10, 0.85);
+  border: 1px solid rgba(212, 172, 13, 0.35);
+  padding: 4px 10px;
+  border-radius: 16px;
+  color: #ffd700;
+  font-family: var(--font-main, sans-serif);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.top-hud-btn:hover {
+  background: linear-gradient(135deg, rgba(212, 172, 13, 0.4), rgba(50, 25, 12, 0.95));
+  border-color: #ffd700;
+  color: #ffffff;
+  transform: translateY(1px);
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.4);
+}
+
+.top-hud-btn:active {
+  transform: scale(0.96);
+}
+
+.top-hud-btn.icon-only {
+  padding: 4px 8px;
+  min-width: 28px;
+  justify-content: center;
+}
+
+.top-hud-btn-icon {
+  font-size: 12px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+.top-hud-btn-label {
+  display: inline-block;
+}
+
+.top-hud-settings-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: 4px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+.xp-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(38, 19, 10, 0.85);
+  border: 1px solid var(--gold-primary);
+  padding: 4px 10px;
+  border-radius: 16px;
+  color: var(--gold-primary);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 10px rgba(245, 176, 65, 0.25);
+  backdrop-filter: blur(12px);
+  white-space: nowrap;
+}
+
+.xp-icon {
+  font-size: 12px;
+  animation: float-badge 2s ease-in-out infinite;
+}
+
+.top-hud-btn:hover {
+  background: linear-gradient(135deg, rgba(212, 172, 13, 0.4), rgba(50, 25, 12, 0.95));
+  border-color: #ffd700;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.4);
+}
+
+.top-hud-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.top-hud-btn.icon-only {
+  padding: 6px 10px;
+  min-width: 34px;
+  justify-content: center;
+}
+
+.top-hud-btn-icon {
+  font-size: 13px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+.top-hud-btn-label {
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Professor Vance Dialogue UI
+   ========================================================================== */
+#dialogue-overlay {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: min(880px, 92vw);
+  background: linear-gradient(135deg, rgba(26, 15, 10, 0.96) 0%, rgba(16, 8, 4, 0.98) 100%);
+  border: 2px solid var(--amber-light, #ffd700);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.98), 0 0 45px rgba(212, 172, 13, 0.5);
+  padding: 22px 28px;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  z-index: 1000000;
+  backdrop-filter: blur(20px);
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#dialogue-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.npc-avatar-box {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--amber-primary);
+  background: radial-gradient(circle at 35% 35%, #5a351f, #1e0f09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--amber-glow);
+  overflow: hidden;
+}
+
+.npc-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.npc-speaking-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan-primary);
+  animation: pulse-avatar 2s infinite;
+  opacity: 0.7;
+}
+
+.dialogue-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.npc-name-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--amber-primary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.npc-role-tag {
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--amber-dim);
+  border: 1px solid var(--amber-primary);
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: var(--amber-light);
+}
+
+.dialogue-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-main);
+  min-height: 48px;
+}
+
+.dialogue-actions {
+  display: flex;
+  gap: 10px;
+  align-self: flex-end;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   Interactive Quick Notification Toast (High-Contrast & High Visibility)
+   ========================================================================== */
+#toast-container {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000000;
+  pointer-events: none;
+  width: max-content;
+  max-width: 90vw;
+}
+
+.toast {
+  background: linear-gradient(135deg, rgba(28, 14, 8, 0.96) 0%, rgba(15, 7, 3, 0.98) 100%);
+  border: 2px solid #d4ac0d;
+  padding: 12px 24px;
+  border-radius: 10px;
+  color: #fff2a3;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 172, 13, 0.4);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: toast-slide 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, rgba(48, 10, 8, 0.97) 0%, rgba(26, 4, 3, 0.99) 100%);
+  border-color: #ff4d4d;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 22px rgba(255, 77, 77, 0.5);
+}
+
+.toast.success {
+  background: linear-gradient(135deg, rgba(10, 38, 18, 0.97) 0%, rgba(4, 20, 10, 0.99) 100%);
+  border-color: #2ecc71;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 20px rgba(46, 204, 113, 0.5);
+}
+
+.toast.reward {
+  background: linear-gradient(135deg, rgba(42, 28, 6, 0.97) 0%, rgba(22, 13, 2, 0.99) 100%);
+  border-color: #f1c40f;
+  color: #fff4bd;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 25px rgba(241, 196, 15, 0.55);
+}
+
+/* ==========================================================================
+   TOP MIDDLE FLOATING OBJECTIVE BANNER
+   ========================================================================== */
+.floating-objective-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(18, 9, 5, 0.92);
+  border: 1.5px solid rgba(212, 172, 13, 0.55);
+  backdrop-filter: blur(14px);
+  padding: 6px 20px;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 16px rgba(255, 215, 0, 0.25);
+  max-width: 520px;
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-objective-banner:hover {
+  border-color: #ffd700;
+  box-shadow: 0 10px 28px rgba(255, 215, 0, 0.45), 0 0 20px rgba(255, 215, 0, 0.3);
+  transform: translateX(-50%) translateY(2px);
+}
+
+.objective-badge-icon {
+  font-size: 18px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
+  flex-shrink: 0;
+}
+
+.objective-text-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.25;
+}
+
+.objective-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffd700;
+  text-transform: uppercase;
+}
+
+.objective-description {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #f5ede6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
+/* ==========================================================================
+   TOP LEFT CORNER FLOATING MAP ICON BUTTON
+   ========================================================================== */
+.floating-map-btn {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 9999;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.65));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+}
+
+.floating-map-btn:hover {
+  transform: scale(1.12) translateY(4px);
+  filter: drop-shadow(0 8px 24px rgba(255, 215, 0, 0.75));
+}
+
+.floating-map-btn:active {
+  transform: scale(0.92);
+}
+
+.floating-map-icon {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+}
+
+/* ==========================================================================
+   TOP RIGHT CORNER FLOATING SETTINGS ICON BUTTON
+   ========================================================================== */
+.floating-settings-btn {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.65));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+}
+
+.floating-settings-btn:hover {
+  transform: scale(1.12) translateY(4px);
+  filter: drop-shadow(0 8px 24px rgba(255, 215, 0, 0.75));
+}
+
+.floating-settings-btn:active {
+  transform: scale(0.92);
+}
+
+.floating-settings-icon {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+}
+
+/* ==========================================================================
+   BOTTOM LEFT CORNER FLOATING INVENTORY ICON BUTTON
+   ========================================================================== */
+.floating-inventory-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9999;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.65));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+}
+
+.floating-inventory-btn:hover {
+  transform: scale(1.12) translateY(-4px);
+  filter: drop-shadow(0 8px 24px rgba(255, 215, 0, 0.75));
+}
+
+.floating-inventory-btn:active {
+  transform: scale(0.92);
+}
+
+.floating-inventory-icon {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+}
+
+.inventory-badge-counter {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #e74c3c;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 11px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* ==========================================================================
+   BOTTOM RIGHT CORNER FLOATING HINT ICON BUTTON
+   ========================================================================== */
+.floating-hint-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.65));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+}
+
+.floating-hint-btn:hover {
+  transform: scale(1.12) translateY(-4px);
+  filter: drop-shadow(0 8px 24px rgba(255, 215, 0, 0.75));
+}
+
+.floating-hint-btn:active {
+  transform: scale(0.92);
+}
+
+.floating-hint-icon {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+}
+
+@media (max-width: 768px) {
+  .floating-objective-banner {
+    top: 12px;
+    padding: 4px 14px;
+    max-width: 260px;
+  }
+  .objective-description {
+    font-size: 10.5px;
+    max-width: 180px;
+  }
+
+  .floating-map-btn {
+    top: 16px;
+    left: 16px;
+  }
+  .floating-map-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
+  }
+
+  .floating-settings-btn {
+    top: 16px;
+    right: 16px;
+  }
+  .floating-settings-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
+  }
+
+  .floating-inventory-btn {
+    bottom: 16px;
+    left: 16px;
+  }
+  .floating-inventory-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
+  }
+
+  .floating-hint-btn {
+    bottom: 16px;
+    right: 16px;
+  }
+  .floating-hint-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "escape-room-game",
+  "version": "1.0.0",
+  "description": "Escape Room Personal Cashflow Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

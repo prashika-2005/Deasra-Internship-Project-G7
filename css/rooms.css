@@ -1,0 +1,620 @@
+/* ==========================================================================
+   ESCAPE ROOM: THE ENTREPRENEUR'S JOURNEY
+   Photorealistic 4-Wall Interactive Room Engine (Ultra HD 8K Clean Edition)
+   Active Puzzle Hotspots with Glowing Golden Focal Dots
+   ========================================================================== */
+
+/* Main Room Box & Viewport */
+.perspective-room-box {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #0c0705;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Atmospheric Ambient Vignette - Smooth Natural Lighting */
+.room-lighting-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.18) 75%, rgba(0, 0, 0, 0.42) 100%);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   WALL VIEWS MASTER STAGE (16:9 Cinema Container with 3D Perspective)
+   ========================================================================== */
+.walls-master-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: min(100vw, 177.78vh);
+  max-height: min(100vh, 56.25vw);
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.4);
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+/* Base Wall Scene - 3D Panoramic Transition */
+.wall-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  image-rendering: auto;
+  image-rendering: smooth;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  filter: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 2;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.5s ease,
+              visibility 0.5s ease;
+}
+
+/* Active Resting State */
+.wall-scene.active {
+  opacity: 1;
+  visibility: visible;
+  transform: perspective(1200px) translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg) scale(1);
+  filter: none;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* 3D Wall Turn Animations */
+/* When moving to NEXT wall (turn right) */
+.wall-scene.slide-exit-left {
+  opacity: 0;
+  visibility: visible;
+  transform: perspective(1200px) translate3d(-100%, 0, -260px) rotateY(46deg) scale(0.85);
+  filter: blur(2px);
+  z-index: 4;
+}
+
+.wall-scene.slide-enter-from-right {
+  opacity: 0;
+  visibility: visible;
+  transform: perspective(1200px) translate3d(100%, 0, -260px) rotateY(-46deg) scale(0.85);
+  filter: blur(2px);
+  z-index: 6;
+}
+
+/* When moving to PREVIOUS wall (turn left) */
+.wall-scene.slide-exit-right {
+  opacity: 0;
+  visibility: visible;
+  transform: perspective(1200px) translate3d(100%, 0, -260px) rotateY(-46deg) scale(0.85);
+  filter: blur(2px);
+  z-index: 4;
+}
+
+.wall-scene.slide-enter-from-left {
+  opacity: 0;
+  visibility: visible;
+  transform: perspective(1200px) translate3d(-100%, 0, -260px) rotateY(46deg) scale(0.85);
+  filter: blur(2px);
+  z-index: 6;
+}
+
+/* Remastered Ultra HD Clean Wall Background Images */
+#wall-view-1 {
+  background-image: url('../assets/wall1_entrance.jpg?v=15');
+}
+
+#wall-view-2 {
+  background-image: url('../assets/wall2_notice_desk.jpg?v=15');
+}
+
+#wall-view-3 {
+  background-image: url('../assets/wall3_exit_painting.jpg?v=15');
+}
+
+#wall-view-4 {
+  background-image: url('../assets/wall4_teller.jpg?v=15');
+}
+
+#wall-view-5 {
+  background-image: url('../assets/wall_5_locker_room.jpg?v=1');
+}
+
+/* ==========================================================================
+/* ==========================================================================
+   COMPLETELY HIDE ALL HOTSPOTS, TOOLTIPS, BADGES, AND PROMPTS
+   ========================================================================== */
+.hotspot,
+.hotspot:hover,
+.hotspot:focus,
+.hotspot:active,
+.hotspot-badge,
+.tooltip,
+[data-tooltip],
+#inspect-prompt,
+#inspect-label,
+.inspect-prompt,
+.inspect-label {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ==========================================================================
+   AUTHENTIC VINTAGE GOLD BRASS DOOR NAMEPLATES (ENLARGED PROPORTIONAL)
+   ========================================================================== */
+.vintage-door-plate {
+  position: absolute;
+  z-index: 25;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 138px;
+  height: 46px;
+  background-image: url('../assets/gold_nameplate.jpg?v=7');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  mix-blend-mode: screen;
+  pointer-events: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%);
+  padding: 4px 10px;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.85));
+}
+
+.vintage-door-plate.entrance-plate {
+  top: 32.5%;
+  left: 30.1%;
+}
+
+.vintage-door-plate.exit-plate {
+  top: 37.8%;
+  left: 72.0%;
+  width: 98px;
+  height: 32px;
+  padding: 2px 6px;
+}
+
+.vintage-door-plate.exit-plate .door-plate-text {
+  font-size: 8px;
+  letter-spacing: 0.8px;
+}
+
+.door-plate-text {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-size: 10.5px;
+  font-weight: 900;
+  color: #1a0801;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 230, 160, 0.95), 0 -1px 1px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   GLOWING GOLDEN DOOR FOCAL DOTS (ENTRANCE & EXIT DOORS)
+   ========================================================================== */
+.door-focal-dot {
+  position: absolute;
+  z-index: 35;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0 !important;
+  visibility: visible !important;
+  transform: translate(-50%, -50%);
+  animation: none !important;
+}
+
+.door-focal-dot::after {
+  display: none !important;
+  opacity: 0 !important;
+  border: none !important;
+  animation: none !important;
+}
+
+.door-focal-dot:hover {
+  transform: translate(-50%, -50%);
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
+
+@keyframes door-dot-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 10px #ffd700, 0 0 18px rgba(255, 215, 0, 0.85);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.28);
+    box-shadow: 0 0 18px #ffffff, 0 0 28px rgba(255, 215, 0, 1);
+  }
+}
+
+@keyframes door-ring-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.0);
+    opacity: 0;
+  }
+}
+
+#w1-entrance-dot {
+  top: 52.5%;
+  left: 23.8%;
+}
+
+#w1-painting-dot {
+  top: 31.0%;
+  left: 63.8%;
+}
+
+#w1-drawer-dot {
+  top: 57.5%;
+  left: 63.8%;
+  width: 24px;
+  height: 24px;
+}
+
+#w2-atm-dot {
+  top: 40.0%;
+  left: 26.5%;
+}
+
+.wall2-pinboard-element {
+  position: absolute;
+  top: 25.0%;
+  left: 44.0%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 97px;
+  z-index: 35;
+  cursor: pointer;
+  pointer-events: auto !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.wall2-pinboard-element:hover {
+  transform: translate(-50%, -50%);
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.wall2-pinboard-element img {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+#w2-suitcase-dot {
+  top: 63.5%;
+  left: 70.0%;
+}
+
+#w3-exit-dot {
+  top: 50.5%;
+  left: 67.2%;
+}
+
+#w3-vault-safe-dot {
+  top: 48.4%;
+  left: 33.3%;
+}
+
+#w3-handle2-dot {
+  top: 48.6%;
+  left: 41.7%;
+}
+
+#w4-sticky-note-dot {
+  top: 36.0%;
+  left: 50.0%;
+}
+
+.wall4-sticky-note-element {
+  position: absolute;
+  top: 36.0%;
+  left: 50.0%;
+  transform: translate(-50%, -50%) rotate(-1.5deg);
+  width: 100px;
+  height: 100px;
+  z-index: 30;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+}
+
+.wall4-sticky-note-element:hover {
+  transform: translate(-50%, -50%) rotate(0deg) scale(1.18);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
+}
+
+.sticky-note-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes doorknob-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px #ffd700, 0 0 14px rgba(255, 215, 0, 0.85);
+  }
+  50% {
+    transform: scale(1.3);
+    box-shadow: 0 0 14px #ffffff, 0 0 22px rgba(255, 215, 0, 1);
+  }
+}
+
+@keyframes doorknob-ring-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.0);
+    opacity: 0;
+  }
+}
+
+*, *::before, *::after {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* ==========================================================================
+   HOTSPOT POSITION COORDINATES (Active Puzzles Only)
+   ========================================================================== */
+#w1-entrance-door {
+  top: 15%;
+  left: 19%;
+  width: 18%;
+  height: 70%;
+}
+
+#w1-wall-clock {
+  top: 5.5%;
+  left: 58.0%;
+  width: 17.0%;
+  height: 26.0%;
+}
+
+#w1-deposit-counter {
+  top: 44.0%;
+  left: 78.0%;
+  width: 12.0%;
+  height: 14.0%;
+}
+
+#w1-floor-notes {
+  top: 80%;
+  left: 17%;
+  width: 25%;
+  height: 16%;
+}
+
+#w2-notice-board {
+  top: 20%;
+  left: 12%;
+  width: 29%;
+  height: 40%;
+}
+
+#w2-pin-note {
+  top: 45.0%;
+  left: 28.0%;
+  width: 8.0%;
+  height: 10.0%;
+}
+
+#w2-withdrawal-counter {
+  top: 38.0%;
+  left: 39.0%;
+  width: 12.0%;
+  height: 14.0%;
+}
+
+#w2-scratch-frame {
+  top: 31%;
+  left: 56.5%;
+  width: 12.5%;
+  height: 19.5%;
+}
+
+#w2-drawer-01 {
+  top: 52.8%;
+  left: 48.0%;
+  width: 17.0%;
+  height: 12.0%;
+}
+
+#w3-exit-door {
+  top: 27%;
+  left: 63.5%;
+  width: 16%;
+  height: 56%;
+}
+
+#w3-transfer-counter {
+  top: 54.0%;
+  left: 24.0%;
+  width: 12.0%;
+  height: 14.0%;
+}
+
+#w3-flower-painting {
+  top: 24%;
+  left: 45.5%;
+  width: 28%;
+  height: 44%;
+}
+
+#w3-vault-safe {
+  top: 36.0%;
+  left: 28.0%;
+  width: 16.0%;
+  height: 32.0%;
+}
+
+#w4-savings-counter {
+  top: 48.0%;
+  left: 18.0%;
+  width: 12.0%;
+  height: 14.0%;
+}
+
+#w4-secret-red-book {
+  top: 47.5%;
+  left: 48.5%;
+  width: 4%;
+  height: 11%;
+  pointer-events: auto;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   SLEEK FLOATING NAVIGATION ARROWS & BOTTOM DOTS
+   ========================================================================== */
+.stage-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 64px;
+  background: rgba(18, 9, 4, 0.72);
+  border: 1.5px solid rgba(212, 172, 13, 0.4);
+  backdrop-filter: blur(10px);
+  color: #ffd700;
+  font-size: 22px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+  outline: none;
+}
+
+.stage-nav-arrow.left-arrow {
+  left: 16px;
+  border-radius: 20px 6px 6px 20px;
+}
+
+.stage-nav-arrow.right-arrow {
+  right: 16px;
+  border-radius: 6px 20px 20px 6px;
+}
+
+.stage-nav-arrow:hover {
+  background: linear-gradient(135deg, rgba(212, 172, 13, 0.45), rgba(40, 20, 10, 0.9));
+  border-color: #fff;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 8px 30px rgba(0, 0, 0, 0.95);
+  transform: translateY(-50%) scale(1.12);
+}
+
+.stage-nav-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Floating Bottom 4-Dot Wall Indicator Shelf - Completely Hidden */
+.stage-bottom-wall-dots {
+  display: none !important;
+}
+
+.wall-nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.wall-nav-dot:hover {
+  transform: scale(1.3);
+  background: rgba(255, 215, 0, 0.6);
+  border-color: #ffd700;
+}
+
+.wall-nav-dot.active {
+  background: radial-gradient(circle, #f39c12 0%, #d35400 100%);
+  border-color: #f1c40f;
+  box-shadow: 0 0 12px rgba(241, 196, 15, 0.8);
+  transform: scale(1.4);
+}
+
+/* Dynamic Locker Handle Focal Dots on Wall 5 */
+.locker-handle-dot {
+  position: absolute !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 0 !important;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  margin-left: -12px;
+  border-radius: 50%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  z-index: 30 !important;
+  pointer-events: auto !important;
+  animation: none !important;
+}
+
+.locker-handle-dot:hover {
+  opacity: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.target-locker-dot {
+  opacity: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+@keyframes pulseTargetLocker {
+  0% { transform: scale(1); box-shadow: 0 0 8px #00e5ff, 0 0 15px rgba(0,229,255,0.6); }
+  50% { transform: scale(1.35); box-shadow: 0 0 20px #00e5ff, 0 0 30px rgba(0,229,255,0.9); }
+  100% { transform: scale(1); box-shadow: 0 0 8px #00e5ff, 0 0 15px rgba(0,229,255,0.6); }
+}
